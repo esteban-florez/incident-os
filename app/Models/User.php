@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\DocumentType;
 use App\Traits\HasActivityLog;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +18,7 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
   /** @use HasFactory<\Database\Factories\UserFactory> */
   use HasActivityLog, HasFactory, HasRoles, HasUuids, LogsActivity, Notifiable, SoftDeletes;
@@ -98,6 +100,11 @@ class User extends Authenticatable
   public function incidentUpdates(): HasMany
   {
     return $this->hasMany(IncidentUpdate::class);
+  }
+
+  public function canAccessPanel(Panel $panel): bool
+  {
+    return true;
   }
 }
 
