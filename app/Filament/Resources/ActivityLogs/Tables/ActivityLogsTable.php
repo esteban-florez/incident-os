@@ -34,9 +34,10 @@ class ActivityLogsTable
         TextColumn::make('causer.name')
           ->label('Causado por')
           ->default('Sistema')
-          ->formatStateUsing(fn (ActivityLog $record) =>
-            user_label($record->causer->name, $record->causer->email)
-          )
+          ->formatStateUsing(function (ActivityLog $record) {
+            if (!$record->causer) return 'Sistema';
+            return user_label($record->causer->name, $record->causer->email);
+          }),
       ])
       ->filters([
         //
