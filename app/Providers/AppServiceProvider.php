@@ -41,6 +41,10 @@ class AppServiceProvider extends ServiceProvider
         ->numbers()
         ->mixedCase();
     });
+
+    if ($this->app->environment('production')) {
+        URL::forceScheme('https');
+    }
   }
 }
 
