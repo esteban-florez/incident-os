@@ -12,11 +12,6 @@ class EditIncident extends EditRecord
 {
   protected static string $resource = IncidentResource::class;
 
-  //protected function getFormActions(): array
-  //{
-  //  return [];
-  //}
-
   protected function getHeaderActions(): array
   {
     return [

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Incidents\Tables;
 use App\Enums\IncidentPriority;
 use App\Enums\IncidentStatus;
 use App\Enums\Role as RoleEnum;
+use App\Filament\Resources\Incidents\IncidentResource;
 use App\Models\Incident;
 use App\Services\ReportService;
 use Filament\Actions\Action;
@@ -77,6 +78,16 @@ class IncidentsTable
       ->recordActions([
         ActionGroup::make([
           ViewAction::make(),
+          Action::make('quick_assign')
+            ->label('Asignar Moderador')
+            ->color('success')
+            ->icon(Heroicon::OutlinedUserPlus)
+            ->url(fn ($record): string => IncidentResource::getUrl('edit', [
+              'record' => $record,
+              'relation' => 'moderators',
+              'open_modal' => 'true',
+            ]))
+            ->visible(fn () => Auth::user()->hasRole(RoleEnum::SUPER_ADMIN->value)),
           EditAction::make(),
           Action::make('download_pdf')
             ->label('Descargar PDF')

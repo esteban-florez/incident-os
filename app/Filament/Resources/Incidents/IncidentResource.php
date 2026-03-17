@@ -67,8 +67,8 @@ class IncidentResource extends Resource
   public static function getRelations(): array
   {
     return [
-      ModeratorsRelationManager::class,
-      UpdatesRelationManager::class,
+      'moderators' => ModeratorsRelationManager::make(['lazy' => false]),
+      'updates' => UpdatesRelationManager::class,
     ];
   }
 
