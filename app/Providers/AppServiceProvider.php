@@ -11,6 +11,7 @@ use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
