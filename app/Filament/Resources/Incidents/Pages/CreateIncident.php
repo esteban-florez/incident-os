@@ -9,6 +9,11 @@ class CreateIncident extends CreateRecord
 {
   protected static string $resource = IncidentResource::class;
 
+  public function canCreateAnother(): bool
+  {
+    return false;
+  }
+
   protected function mutateFormDataBeforeCreate(array $data): array
   {
     $data['user_id'] = auth()->id();

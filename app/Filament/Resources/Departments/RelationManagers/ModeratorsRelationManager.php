@@ -28,6 +28,19 @@ class ModeratorsRelationManager extends RelationManager
   public function table(Table $table): Table
   {
     return $table
+      ->extraAttributes([
+        'x-data' => '{}',
+        'x-init' => "
+          if (new URLSearchParams(window.location.search).get('open_modal') === 'true') {
+            setTimeout(() => {
+              \$wire.mountTableAction('attach');
+              const url = new URL(window.location);
+              url.searchParams.delete('open_modal');
+              window.history.replaceState({}, '', url);
+            }, 300);
+          }
+        ",
+      ])
       ->columns([
         TextColumn::make('full_document')
           ->label('Cédula')
