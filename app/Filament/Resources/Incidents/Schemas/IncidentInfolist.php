@@ -60,6 +60,7 @@ class IncidentInfolist
         Section::make('Evidencias Adjuntas')
           ->schema([
             ImageEntry::make('attachments')
+              ->disk('public')
               ->label('')
               ->hiddenLabel()
               ->imageSize(300)

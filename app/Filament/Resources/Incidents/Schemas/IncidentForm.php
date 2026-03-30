@@ -36,12 +36,14 @@ class IncidentForm
                   ->columnSpanFull()
                   ->toolbarButtons(['bold', 'italic', 'bulletList', 'orderedList']),
                 FileUpload::make('attachments')
+                  ->disk('public')
                   ->label('Evidencias (Fotos/Capturas)')
                   ->multiple()
                   ->reorderable()
                   ->image()
                   ->imageEditor()
                   ->directory('incident-attachments')
+                  ->visibility('public')
                   ->columnSpanFull()
                   ->maxFiles(5),
             ]),
