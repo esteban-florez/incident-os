@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Enums\Role as RoleEnum;
 use App\Models\Incident;
 use App\Observers\IncidentObserver;
+use Filament\Actions\CreateAction;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Support\Facades\FilamentTimezone;
 use Filament\Tables\Columns\TextColumn;
@@ -41,6 +42,10 @@ class AppServiceProvider extends ServiceProvider
         ->symbols()
         ->numbers()
         ->mixedCase();
+    });
+
+    CreateAction::configureUsing(function (CreateAction $action): void {
+        $action->createAnother(false);
     });
 
     if ($this->app->environment('production')) {

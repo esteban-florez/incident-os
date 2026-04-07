@@ -68,7 +68,7 @@ class IncidentResource extends Resource
   {
     return [
       'moderators' => ModeratorsRelationManager::make(['lazy' => false]),
-      'updates' => UpdatesRelationManager::class,
+      'updates' => UpdatesRelationManager::class::make(['lazy' => false]),
     ];
   }
 

@@ -76,6 +76,7 @@ class UpdatesRelationManager extends RelationManager
           ->toolbarButtons(['bold', 'italic', 'bulletList']),
         FileUpload::make('attachments')
           ->label('Evidencias (Fotos/Capturas)')
+          ->disk('public')
           ->multiple()
           ->reorderable()
           ->image()
@@ -124,6 +125,7 @@ class UpdatesRelationManager extends RelationManager
           ->schema([
             ImageEntry::make('attachments')
               ->label('')
+              ->disk('public')
               ->hiddenLabel()
               ->imageSize(300)
               ->square(),
