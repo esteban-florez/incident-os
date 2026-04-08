@@ -25,18 +25,25 @@ class DepartmentStats extends StatsOverviewWidget
   {
     $user = Auth::user();
 
-    $deptIncidents = Incident::whereIn('department_id', $user->departments->pluck('id'));
+    $moderatorIncidents = Incident::query()
+      ->where(function ($query) use ($user) {
+        $query->whereIn('department_id', $user->departments->pluck('id'))
+          ->orWhereHas('moderators', fn ($q) => $q->where('user_id', $user->id));
+      });
 
     return [
-      Stat::make('Por Atender', (clone $deptIncidents)->where('status', IncidentStatus::NEW)->count())
+      Stat::make('Por Atender', (clone $moderatorIncidents)->where('status', IncidentStatus::NEW)->count())
         ->description('Incidencias nuevas en tus áreas')
         ->descriptionIcon(Heroicon::OutlinedBellAlert)
         ->color('danger'),
-      Stat::make('Asignadas a Mí', $user->assignedIncidents()->where('status', '!=', IncidentStatus::CLOSED)->count())
+      Stat::make('Asignadas a Mí', (clone $moderatorIncidents)->where('status', '!=', IncidentStatus::CLOSED)->count())
         ->description('Incidencias bajo tu responsabilidad')
         ->descriptionIcon(Heroicon::OutlinedBriefcase)
         ->color('warning'),
-      Stat::make('Resueltas', (clone $deptIncidents)->where('status', IncidentStatus::CLOSED)->count())
+      Stat::make(
+        'Resueltas',
+        (clone $moderatorIncidents)->whereIn('status', [IncidentStatus::RESOLVED, IncidentStatus::CLOSED])->count()
+      )
         ->description('Total de incidencias resueltas')
         ->descriptionIcon(Heroicon::OutlinedCheckBadge)
         ->color('success'),
