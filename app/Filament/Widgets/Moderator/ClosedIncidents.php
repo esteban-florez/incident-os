@@ -24,16 +24,24 @@ class ClosedIncidents extends TableWidget
     return Auth::user()->hasRole(RoleEnum::MODERATOR->value);
   }
 
+  private function getModeratorQuery(): Builder
+  {
+    $user = Auth::user();
+
+    return Incident::query()
+      ->whereIn('status', [IncidentStatus::RESOLVED, IncidentStatus::CLOSED])
+      ->where(function (Builder $query) use ($user) {
+        $query->whereIn('department_id', $user->departments->pluck('id'))
+          ->orWhereHas('moderators', fn ($q) => $q->where('user_id', $user->id));
+      })
+      ->latest()
+      ->limit(5);
+  }
+
   public function table(Table $table): Table
   {
     return $table
-      ->query(fn (): Builder =>
-        Incident::query()
-          ->where('status', IncidentStatus::CLOSED->value)
-          ->whereHas('moderators', fn ($q) => $q->where('user_id', Auth::id()))
-          ->latest('closed_at')
-          ->limit(5)
-      )
+      ->query(fn (): Builder => $this->getModeratorQuery())
       ->columns([
         TextColumn::make('title')
           ->label('Título')
