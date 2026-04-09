@@ -36,11 +36,6 @@ class UsersTable
           ->color(fn (string $state): string => Role::tryFrom($state)?->getColor() ?? 'gray')
           ->icon(fn (string $state): string => Role::tryFrom($state)?->getIcon() ?? 'heroicon-m-user')
           ->searchable(),
-        TextColumn::make('email_verified_at')
-          ->label('Email verificado')
-          ->sortable()
-          ->placeholder('Sin verificar')
-          ->date('d/m/Y - g:i A'),
         TextColumn::make('created_at')
           ->label('Fecha de registro')
           ->sortable()
