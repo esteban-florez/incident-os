@@ -25,10 +25,6 @@ class UserInfolist
           ->formatStateUsing(fn (string $state): string => Role::tryFrom($state)?->getLabel() ?? $state)
           ->color(fn (string $state): string => Role::tryFrom($state)?->getColor() ?? 'gray')
           ->icon(fn (string $state): string => Role::tryFrom($state)?->getIcon() ?? 'heroicon-m-user'),
-        TextEntry::make('email_verified_at')
-          ->label('Email verificado')
-          ->placeholder('Sin verificar')
-          ->date('d/m/Y - g:i A'),
         TextEntry::make('created_at')
           ->label('Fecha de registro')
           ->date('d/m/Y - g:i A'),
